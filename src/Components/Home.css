@@ -1,0 +1,13 @@
+.home{
+    display: flex;
+}
+.order{
+    display: flex;
+    vertical-align: middle;
+    height: 40px;
+    margin: 10px;
+}
+
+button{
+    height: 30px;
+}
