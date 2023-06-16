@@ -1,7 +1,7 @@
 import './Home.css'
 import { useState, useEffect } from 'react'
 import { db, auth } from './firebase-config'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore'
 import{
   onAuthStateChanged,
   signOut,
@@ -18,10 +18,14 @@ export const Home = () =>{
     const [orders, setOrders] = useState([])
 
     const [user, setUser ] = useState({});
+
+    const [placeO, setPlaceO] = useState([])
+    const dbRefPlaceO = collection(db, 'place')
   
-    onAuthStateChanged(auth, (CurrentUser) => {
-      setUser(CurrentUser);
-    });
+    // onAuthStateChanged(auth, (CurrentUser) => {
+    //   setUser(CurrentUser);
+    // });
+
 
     const remove = (izbor) => {
       const postoji = orders.find((x) => x.id === izbor.id)
@@ -39,6 +43,12 @@ export const Home = () =>{
         )
         }
       }
+    }
+
+    const place = () => {
+      setDoc(doc(db, "data", "collection-orders"),
+        { user: "test", order: orders})
+        setOrders([])
     }
 
     const totalPrice = () => {
@@ -106,6 +116,9 @@ export const Home = () =>{
   
   
       getDrinks();
+
+
+      
   
   
     }, []);
@@ -186,6 +199,7 @@ export const Home = () =>{
   <h4> Cena dostava: {totalPrice() > 3000 ? 0 : totalPrice() * 0.1} </h4>
   <h4> Tips </h4>
   <input id="tips" type='number'></input>
+  <button onClick={() => place()}> Place order</button>
     </div>) : (<div/>)
         }
         
